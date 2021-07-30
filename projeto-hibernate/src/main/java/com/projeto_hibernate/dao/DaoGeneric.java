@@ -19,7 +19,7 @@ public class DaoGeneric<E> {
 		EntityTransaction transaction = entityManager.getTransaction();
 		transaction.begin();
 		
-		List<E> lista = entityManager.createQuery("from " + entidade.getName()).getResultList();
+		List<E> lista = entityManager.createQuery("from " + entidade.getName() + " order by id desc").getResultList();
 		
 		transaction.commit();
 		
@@ -43,7 +43,7 @@ public class DaoGeneric<E> {
 	/*
 	 * DELETE
 	 * */
-	public void deletePorId(E entidade) {
+	public void deletePorId(E entidade) throws Exception {
 		Object id = HibernateUtil.getPrimaryKey(entidade);
 		
 		EntityTransaction transaction = entityManager.getTransaction();
@@ -65,7 +65,9 @@ public class DaoGeneric<E> {
 		transaction.commit();
 	}
 	
-	
+	/*
+	 * Pesquisar
+	 * */
 	public E pesquisar(E entidade) {
 		Object id = HibernateUtil.getPrimaryKey(entidade);
 		
@@ -75,9 +77,13 @@ public class DaoGeneric<E> {
 	}
 	
 	
+	
+	
 	public E pesquisarDireto(Long id, Class<E> entidade) {
 				
-		E e = (E) entityManager.find(entidade, id);
+		entityManager.clear();
+		
+		E e = (E) entityManager.createQuery("from " + entidade.getSimpleName() + " where id = " + id).getSingleResult();
 		
 		return e;
 	}
@@ -87,6 +93,9 @@ public class DaoGeneric<E> {
 	public EntityManager getEntityManager() {
 		return entityManager;
 	}
+
+
+	
 	
 	
 }

@@ -6,6 +6,7 @@
 	
 		<class>com.projeto_hibernate.model.UsuarioPessoa</class>
 		<class>com.projeto_hibernate.model.Telefone</class>
+		<class>com.projeto_hibernate.model.Email</class>
 		
 		<properties>
 			<!-- Dados de conexão com o Banco -->

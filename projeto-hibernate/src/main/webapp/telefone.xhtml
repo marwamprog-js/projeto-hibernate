@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Frameset//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-frameset.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"> <h:head>
+
+</h:head> <h:body>
+
+	<h:form>
+		<p:breadCrumb>
+			<p:menuitem />
+			<p:menuitem value="Página Inicial" action="index.jsf" />
+			<p:menuitem value="Usuários" action="usuario.jsf" />
+		</p:breadCrumb>
+	</h:form>
+
+	<br />
+	<br />
+
+	<h:form id="frmTelefone">
+
+		<p:growl autoUpdate="true" showDetail="true" id="msgTelefone" />
+
+		<h:panelGrid columns="2">
+			<p:outputLabel value="Id: " />
+			<p:inputText readonly="true" id="id"
+				value="#{telefoneManagedBean.telefone.id}" />
+
+			<p:outputLabel value="Usuário: " />
+			<p:inputText id="usuario" value="#{telefoneManagedBean.usuario.nome}" />
+
+			<p:outputLabel value="Tipo: " />
+			<p:selectOneMenu id="comboTelefone" style="width: 170px"
+				value="#{telefoneManagedBean.telefone.tipo}">
+				<f:selectItem itemLabel="Whatsapp" itemValue="W" />
+				<f:selectItem itemLabel="Casa" itemValue="C" />
+				<f:selectItem itemLabel="Trabalho" itemValue="T" />
+			</p:selectOneMenu>
+
+			<p:outputLabel value="Número: " />
+			<p:inputMask id="numero" mask="(99) 99999-9999" required="true"
+				requiredMessage="Favor informar o número"
+				value="#{telefoneManagedBean.telefone.numero}" />
+
+
+		</h:panelGrid>
+
+		<br />
+		<br />
+
+		<p:commandButton value="Novo" id="btnNovo" immediate="true"
+			action="#{telefoneManagedBean.novo}">
+			<f:ajax execute="@this" render="@form" />
+		</p:commandButton>
+		<p:commandButton value="Salvar" id="btnSalvar" ajax="false"
+			action="#{telefoneManagedBean.salvar}" />
+	</h:form>
+
+	<br />
+	<br />
+
+	<h:form id="frmTableTelefones">
+
+		<p:dataTable id="tableTelefones"
+			value="#{telefoneManagedBean.usuario.telefones}" var="telefone"
+			cellpadding="15" border="1">
+			<f:facet name="header">Lista de Telefones</f:facet>
+
+			<p:column headerText="#" style="width: 50px">
+				<h:outputText value="#{telefone.id}" />
+			</p:column>
+
+			<p:column headerText="Tipo">
+				<h:outputText
+					value="#{(telefone.tipo == 'W') ? 'Whatsapp' : (telefone.tipo == 'C') ? 'Casa' : 'Trabalho'}" />
+			</p:column>
+
+			<p:column headerText="Número">
+				<h:outputText value="#{telefone.numero}" />
+			</p:column>
+
+			<p:column headerText="Excluir" style="width: 100px">
+				<center> <h:commandLink immediate="true" id="btnExcluir"
+					action="#{telefoneManagedBean.removeTelefone}">
+					<h:graphicImage url="resources/img/btnExcluir.png" width="25"
+						height="25" />
+					<f:setPropertyActionListener value="#{telefone}"
+						target="#{telefoneManagedBean.telefone}" />
+					<f:ajax execute="btnExcluir"
+						render="@form :frmTelefone:msgTelefone" />
+				</h:commandLink> </center>
+			</p:column>
+		</p:dataTable>
+	</h:form>
+
+
+	<br />
+	<br />
+
+
+</h:body> </html>
